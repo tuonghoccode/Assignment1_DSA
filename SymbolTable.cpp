@@ -111,9 +111,11 @@ void SymbolTable::run(string filename) {
       } else if (method == "END") {
         level--;
       } else if (level != 0) {
-        Node *block_level = new Node();
+        Node *block_level = NULL;
         block(block_level, T, dataLine);
       }
+      if (level < 0)
+        throw UnknownBlock();
 
       if (level == 0) {
         if (method == "INSERT")

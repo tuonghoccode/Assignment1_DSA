@@ -1,5 +1,7 @@
 INSERT x number
 INSERT y string
-ASSIGN x 15
-ASSIGN y 123
-
+BEGIN
+INSERT x number
+INSERT y number
+BEGIN
+INSERT y string
