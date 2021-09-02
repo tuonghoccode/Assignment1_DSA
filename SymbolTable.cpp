@@ -8,9 +8,8 @@ Node *SymbolTable::insert(Node *head, Node *T) {
     head->next = NULL;
     return head;
   }
-  while (p->next != NULL)
-    p = p->next;
-  p->next = T;
+  while( p->next != NULL) p=p->next;
+    p->next = T;
   return head;
 }
 void SymbolTable::print(Node *head) {
@@ -28,7 +27,17 @@ void SymbolTable::run(string filename) {
   if (newfile.is_open()) {
     string dataLine, method, indentifier_name, type;
     while (getline(newfile, dataLine)) {
-      newfile >> method >> indentifier_name >> type;
+      int start = 0;
+      int end = dataLine.find(" ");
+      method = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
+      indentifier_name = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
+      type = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
       Node *T = new Node(method, indentifier_name, type);
       head = insert(head, T);
     }
