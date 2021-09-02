@@ -5,11 +5,12 @@ Node *SymbolTable::insert(Node *head, Node *T) {
 
   if (head == NULL) {
     head = T;
-    head-> next = NULL;
+    head->next = NULL;
     return head;
   }
+  while (p->next != NULL)
+    p = p->next;
   p->next = T;
-
   return head;
 }
 void SymbolTable::print(Node *head) {
@@ -27,13 +28,11 @@ void SymbolTable::run(string filename) {
   if (newfile.is_open()) {
     string dataLine, method, indentifier_name, type;
     while (getline(newfile, dataLine)) {
-    istringstream iss(dataLine);
-
-        while (data)
-    //   Node *T = new Node(method, indentifier_name, type);
-    //   head = insert(head, T);
+      newfile >> method >> indentifier_name >> type;
+      Node *T = new Node(method, indentifier_name, type);
+      head = insert(head, T);
     }
-    // print(head);
+    print(head);
     newfile.close();
   }
   cout << "success";

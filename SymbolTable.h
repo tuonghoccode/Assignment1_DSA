@@ -14,7 +14,7 @@ public:
     this->method = method;
     this->indentifier_name = indentifier_name;
     this->type = type;
-    next = NULL;
+    next=NULL;
   }
   friend class SymbolTable;
 };
