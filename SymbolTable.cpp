@@ -47,7 +47,7 @@ bool isNumber(const string &s) {
 
 Node *SymbolTable::assign(Node *head, Node *T, string dataLine) {
   Node *p = head;
-  if (head==NULL)
+  if (head == NULL)
     throw Undeclared(dataLine);
   bool check = false;
   bool isExit = false;
@@ -79,38 +79,55 @@ void SymbolTable::print(Node *head) {
   }
 }
 
+void SymbolTable::block(Node *block_level, Node *T, string dataLine) {
+  insert(block_level, T, dataLine);
+}
+
 void SymbolTable::run(string filename) {
 
-  // fstream newfile;
-  // newfile.open(filename, ios::in);
-  // if (newfile.is_open()) {
-  //   string dataLine, method, indentifier_name, type;
-  //   while (getline(newfile, dataLine)) {
-  //     int start = 0;
-  //     int end = dataLine.find(" ");
-  //     method = dataLine.substr(start, end - start);
-  //     start = end + 1;
-  //     end = dataLine.find(" ", start);
-  //     indentifier_name = dataLine.substr(start, end - start);
-  //     start = end + 1;
-  //     end = dataLine.find(" ", start);
-  //     type = dataLine.substr(start, end - start);
-  //     start = end + 1;
-  //     end = dataLine.find(" ", start);
+  fstream newfile;
+  newfile.open(filename, ios::in);
+  if (newfile.is_open()) {
+    string dataLine, method, indentifier_name, type;
+    int level = 0;
 
-  //     // cout<<method<<" "<<indentifier_name<<" "<<type<<endl;
-  //     Node *T = new Node(method, indentifier_name, type);
-  //     if (method == "INSERT")
-  //       head = insert(head, T, dataLine);
-  //     else if (method == "ASSIGN")
-  //       head = assign(head, T, dataLine);
-  //     bool check = checkRedeclared(head, T);
+    while (getline(newfile, dataLine)) {
+      int start = 0;
+      int end = dataLine.find(" ");
+      method = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
+      indentifier_name = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
+      type = dataLine.substr(start, end - start);
+      start = end + 1;
+      end = dataLine.find(" ", start);
 
-  //     if (!check)
-  //       break;
-  //   }
-  //   print(head);
-  //   newfile.close();
-  // }
-  cout<<"success";
+      Node *T = new Node(method, indentifier_name, type);
+
+      if (method == "BEGIN") {
+        level++;
+      } else if (method == "END") {
+        level--;
+      } else if (level != 0) {
+        Node *block_level = new Node();
+        block(block_level, T, dataLine);
+      }
+
+      if (level == 0) {
+        if (method == "INSERT")
+          head = insert(head, T, dataLine);
+        else if (method == "ASSIGN")
+          head = assign(head, T, dataLine);
+        bool check = checkRedeclared(head, T);
+        if (!check)
+          break;
+      }
+    }
+    if (level != 0) {
+      throw UnclosedBlock(level);
+    }
+    newfile.close();
+  }
 };

@@ -1,9 +1,9 @@
 #ifndef SYMBOLTABLE_H
 #define SYMBOLTABLE_H
 #include "main.h"
-const int MAX = 100;
 
-class Node {
+
+struct Node {
 private:
   string method, indentifier_name, type;
   Node *next;
@@ -34,5 +34,6 @@ public:
   Node *assign(Node *head, Node *T, string dataLine);
   void print(Node *head);
   bool checkRedeclared(Node *head, Node *T);
+  void block(Node *head, Node* T, string dataLine);
 };
 #endif
