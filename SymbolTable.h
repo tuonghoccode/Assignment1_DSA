@@ -14,7 +14,7 @@ public:
     this->method = method;
     this->indentifier_name = indentifier_name;
     this->type = type;
-    next=NULL;
+    next = NULL;
   }
   friend class SymbolTable;
 };
@@ -30,7 +30,9 @@ public:
     tail = NULL;
   }
   void run(string filename);
-  Node* insert(Node* head, Node* T);
-  void print(Node* head);
+  Node *insert(Node *head, Node *T, string dataLine);
+  Node *assign(Node *head, Node *T, string dataLine);
+  void print(Node *head);
+  bool checkRedeclared(Node *head, Node *T);
 };
 #endif
